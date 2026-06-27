@@ -17,8 +17,12 @@ export class PrismaRepository extends PrismaClient {
   private readonly logger = new Logger('PrismaRepository');
 
   public async onModuleInit() {
-    await this.$connect();
-    this.logger.info('Repository:Prisma - ON');
+    try {
+      await this.$connect();
+      this.logger.info('Repository:Prisma - ON');
+    } catch (error) {
+      this.logger.error('Repository:Prisma - Failed to connect to database: ' + error.message);
+    }
   }
 
   public async onModuleDestroy() {
