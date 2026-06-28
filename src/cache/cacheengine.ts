@@ -16,7 +16,7 @@ export class CacheEngine {
   ) {
     const cacheConf = configService.get<CacheConf>('CACHE');
 
-    if (cacheConf?.REDIS?.ENABLED && cacheConf?.REDIS?.URI !== '') {
+    if (cacheConf?.REDIS?.ENABLED && cacheConf?.REDIS?.URI) {
       logger.verbose(`RedisCache initialized for ${module}`);
       this.engine = new RedisCache(configService, module);
     } else if (cacheConf?.LOCAL?.ENABLED) {

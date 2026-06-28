@@ -39,14 +39,11 @@ class Redis {
         this.connected = false;
       });
 
-      try {
-        this.client.connect();
-        this.connected = true;
-      } catch (e) {
+      this.client.connect().catch((e) => {
         this.connected = false;
         this.logger.error('redis connect exception caught: ' + e);
-        return null;
-      }
+      });
+      this.connected = true;
 
       return this.client;
     }
