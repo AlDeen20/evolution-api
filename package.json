@@ -6,6 +6,7 @@
   "type": "commonjs",
   "scripts": {
     "build": "node runWithProvider.js \"npx prisma generate --schema ./prisma/DATABASE_PROVIDER-schema.prisma\" && tsc --noEmit && tsup",
+    "build:deploy": "node runWithProvider.js \"npx prisma generate --schema ./prisma/DATABASE_PROVIDER-schema.prisma\" && tsup",
     "start": "tsx ./src/main.ts",
     "start:prod": "node dist/main",
     "dev:server": "tsx watch ./src/main.ts",
