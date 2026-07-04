@@ -9,7 +9,7 @@ const logger = new Logger('GUARD');
 
 async function apikey(req: Request, _: Response, next: NextFunction) {
   const env = configService.get<Auth>('AUTHENTICATION').API_KEY;
-  const key = req.get('apikey') || (req.query.apikey as string);
+  const key = req.get('apikey') || (req.query.apikey as string) || (req.body?.apikey as string);
   const db = configService.get<Database>('DATABASE');
 
   if (!key) {

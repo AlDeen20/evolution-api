@@ -44,6 +44,16 @@ export class InstanceRouter extends RouterBroker {
 
         return res.status(HttpStatus.OK).json(response);
       })
+      .post(this.routerPath('connect'), ...guards, async (req, res) => {
+        const response = await this.dataValidate<InstanceDto>({
+          request: req,
+          schema: null,
+          ClassRef: InstanceDto,
+          execute: (instance) => instanceController.connectToWhatsapp(instance),
+        });
+
+        return res.status(HttpStatus.OK).json(response);
+      })
       .get(this.routerPath('connectionState'), ...guards, async (req, res) => {
         const response = await this.dataValidate<InstanceDto>({
           request: req,
@@ -54,8 +64,30 @@ export class InstanceRouter extends RouterBroker {
 
         return res.status(HttpStatus.OK).json(response);
       })
+      .post(this.routerPath('connectionState'), ...guards, async (req, res) => {
+        const response = await this.dataValidate<InstanceDto>({
+          request: req,
+          schema: null,
+          ClassRef: InstanceDto,
+          execute: (instance) => instanceController.connectionState(instance),
+        });
+
+        return res.status(HttpStatus.OK).json(response);
+      })
       .get(this.routerPath('fetchInstances', false), ...guards, async (req, res) => {
-        const key = req.get('apikey');
+        const key = req.get('apikey') || (req.query.apikey as string);
+
+        const response = await this.dataValidate<InstanceDto>({
+          request: req,
+          schema: null,
+          ClassRef: InstanceDto,
+          execute: (instance) => instanceController.fetchInstances(instance, key),
+        });
+
+        return res.status(HttpStatus.OK).json(response);
+      })
+      .post(this.routerPath('fetchInstances', false), ...guards, async (req, res) => {
+        const key = req.get('apikey') || (req.body?.apikey as string);
 
         const response = await this.dataValidate<InstanceDto>({
           request: req,
