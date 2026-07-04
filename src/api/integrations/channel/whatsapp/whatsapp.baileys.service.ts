@@ -2292,13 +2292,14 @@ export class BaileysStartupService extends ChannelStartupService {
     options?: Options,
     isIntegration = false,
   ) {
-    const isWA = (await this.whatsappNumber({ numbers: [number] }))?.shift();
-
-    if (!isWA.exists && !isJidGroup(isWA.jid) && !isWA.jid.includes('@broadcast')) {
-      throw new BadRequestException(isWA);
+    let sender: string;
+    try {
+      const isWA = (await this.whatsappNumber({ numbers: [number] }))?.shift();
+      sender = isWA.jid.toLowerCase();
+    } catch (error) {
+      this.logger.warn(`onWhatsApp check failed, constructing JID directly: ${error?.message || error}`);
+      sender = createJid(number).toLowerCase();
     }
-
-    const sender = isWA.jid.toLowerCase();
 
     this.logger.verbose(`Sending message to ${sender}`);
 
